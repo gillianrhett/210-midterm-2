@@ -4,7 +4,8 @@
 #include <vector>
 using namespace std;
 
-const int MIN_NR = 0, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
+const int MIN_NR = 0, MAX_NR = 98; // I used these to pick random names - the text file had 99 names
+const int MIN_LS = 5, MAX_LS = 20; // I didn't use these
 const int P_ORDER = 40, P_NEW = 60, P_END_LEAVES = 20, P_ANY_LEAVES = 10, P_VIP = 10;
 const int MINUTES = 20;
 /*
@@ -240,13 +241,8 @@ int main() {
         names.push_back(name);
     }
     inFile.close();
-    /*
-    // TESTING
-    for(string n : names)
-        cout << n << endl;
-    cout << names.size() << endl;
-    */
-// When the store opens (i.e. in first time period), add 5 customers to the line right away.
+
+    // When the store opens (i.e. in first time period), add 5 customers to the line right away.
     int rNum;
     cout << "Store opens:" << endl;
     int lineSize = 0;
@@ -259,18 +255,16 @@ int main() {
     cout << "\tResulting line:" << endl;
     for (int i = 1; i <= lineSize; ++i)
         cout << "\t\t" << names.at(line.get_data(i)) << endl;
-    cout << endl;
 
     int prob; // for probability calculations
-    string tempName = "none"; // for displaying name of customer
+    bool VIP = false; // keep track of VIP because they get served in the next minute
 
-    for (int i = 2; i < MINUTES; ++i) { // start at 2 like the example
+    for (int i = 2; i <= MINUTES; ++i) { // start at 2 like the example because opening was the first minute
         cout << "Time step #" << i << ":" << endl;
         // does the first customer order?
         prob = rand() % 100 + 1;  // returns random number 1-100
-        if (prob <= P_ORDER) {
-            tempName = names.at(line.get_data(1));
-            cout << "\t" << tempName << " is served" << endl;
+        if (prob <= P_ORDER && lineSize > 0) {
+            cout << "\t" << names.at(line.get_data(1)) << " is served" << endl;
             line.pop_front(); // if they ordered, they are done and can leave
             --lineSize;
         }
@@ -287,7 +281,7 @@ int main() {
         
         // does the customer at the end of the line leave?
         prob = rand() % 100 + 1;
-        if (prob <= P_END_LEAVES) {
+        if (prob <= P_END_LEAVES && lineSize > 0) {
             cout << "\t" << names.at(line.get_data(lineSize)) << " (at the rear) left the line" << endl;
             line.pop_back();
             --lineSize;
@@ -295,17 +289,26 @@ int main() {
         
         // does any customer leave?
         prob = rand() % 100 + 1;
-        if (prob <= P_ANY_LEAVES) {
+        if (prob <= P_ANY_LEAVES && lineSize > 0) {
             rNum = rand() % (lineSize - 1); // pick a random customer
             line.delete_val(rNum);
             cout  << "\t" << names.at(rNum) << " left the line" << endl;
+            --lineSize;
         }
 
         // does a VIP arrive? 
         prob = rand() % 100 + 1;
         if (prob <= P_VIP) {
-            
+            rNum = rand() % (MAX_NR - MIN_NR + 1) + MIN_NR;
+            line.push_front(rNum);
+            ++lineSize;
+            cout << "\t" << names.at(rNum) << " (VIP) joins the front of the line" << endl;
         }
+
+        cout << "\tResulting line:" << endl;
+        for (int i = 1; i <= lineSize; ++i)
+            cout << "\t\t" << names.at(line.get_data(i)) << endl;        
     }
+
     return 0;
 }
