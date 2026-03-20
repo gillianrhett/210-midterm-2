@@ -5,7 +5,7 @@
 using namespace std;
 
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
-const double P_ORDER = 0.4, P_NEW = 0.6, P_END_LEAVES = 0.2, P_ANY_LEAVES = 0.1, P_VIP = 0.1;
+const int P_ORDER = 40, P_NEW = 60, P_END_LEAVES = 20, P_ANY_LEAVES = 10, P_VIP = 10;
 const int MINUTES = 20;
 /*
 A customer being helped at the beginning of the line and ordering their coffee is 40%
@@ -235,16 +235,28 @@ int main() {
     */
 // When the store opens (i.e. in first time period), add 5 customers to the line right away.
     int rNum;
+    cout << "Store opens:" << endl;
     for (int i = 0; i < 5; ++i) {
         rNum = rand()% (MAX_NR - MIN_NR + 1) - MIN_NR;
-    }
-    
-
-    for (int i = 0; i < MINUTES; ++i) {
-
+        line.push_back(rNum);
+        //cout << names.at(line.) ; // TODO how can I get the data values if the nodes are private??
     }
 
+    int prob; // for probability calculations
 
-    
+    for (int i = 2; i < MINUTES; ++i) { // start at 2 like the example
+        cout << "Time step #" << i << ":" << endl;
+        // does the first customer order?
+        prob = rand() % 100 + 1;  // returns random number 1-100
+        if (prob <= 40)
+            line.pop_front(); // if they ordered, they are done and can leave
+        // does a new customer joining the queue?
+        
+        // does the customer at the end of the line leave?
+        
+        // does any customer leave?
+        
+        // does a VIP arrive?    
+    }
     return 0;
 }
