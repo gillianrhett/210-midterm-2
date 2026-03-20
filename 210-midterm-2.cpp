@@ -236,26 +236,52 @@ int main() {
 // When the store opens (i.e. in first time period), add 5 customers to the line right away.
     int rNum;
     cout << "Store opens:" << endl;
+    int lineSize = 0;
     for (int i = 0; i < 5; ++i) {
-        rNum = rand()% (MAX_NR - MIN_NR + 1) - MIN_NR;
+        rNum = rand() % (MAX_NR - MIN_NR + 1) + MIN_NR;
         line.push_back(rNum);
+        ++lineSize;
         //cout << names.at(line.) ; // TODO how can I get the data values if the nodes are private??
     }
 
     int prob; // for probability calculations
+    string tempName = "none"; // for displaying name of customer
 
     for (int i = 2; i < MINUTES; ++i) { // start at 2 like the example
         cout << "Time step #" << i << ":" << endl;
         // does the first customer order?
         prob = rand() % 100 + 1;  // returns random number 1-100
-        if (prob <= 40)
+        if (prob <= P_ORDER) {
+            //tempName = names.at(list) // TODO retrieve the data from the node
+            cout << tempName << " is served." << endl;
             line.pop_front(); // if they ordered, they are done and can leave
-        // does a new customer joining the queue?
+            --lineSize;
+        }
+        
+        // does a new customer join the queue?
+        prob = rand() % 100 + 1;
+        if (prob <= P_NEW) {
+            // pick a new random index for a name
+            rNum = rand() % (MAX_NR - MIN_NR + 1) + MIN_NR;
+            line.push_back(rNum);
+            ++lineSize;
+            cout << names.at(rNum) << " joins the line." << endl;
+        }
         
         // does the customer at the end of the line leave?
+        prob = rand() % 100 + 1;
+        if (prob <= P_END_LEAVES) {
+            line.pop_back();
+            --lineSize;
+        }
         
         // does any customer leave?
-        
+        prob = rand() % 100 + 1;
+        if (prob <= P_ANY_LEAVES) {
+            rNum = rand() % (lineSize - 1); // pick a random customer
+            
+        }
+
         // does a VIP arrive?    
     }
     return 0;
