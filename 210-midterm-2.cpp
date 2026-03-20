@@ -213,6 +213,18 @@ public:
         }
         cout << endl;
     }
+
+    // I couldn't think of a way to access an individual data value without making a new member function
+    int get_data(int position) { // this is a position, not an index, so 1 means the first item
+        if (!head)
+            return 0;
+        Node* curr = head;
+        int i = 1;
+        while (curr && i < position) {
+            curr = curr->next;
+        }
+        return curr->data;
+    }
 };
 
 int main() {
@@ -241,8 +253,9 @@ int main() {
         rNum = rand() % (MAX_NR - MIN_NR + 1) + MIN_NR;
         line.push_back(rNum);
         ++lineSize;
-        //cout << names.at(line.) ; // TODO how can I get the data values if the nodes are private??
     }
+    line.print();
+    cout << line.get_data(1) << " " << line.get_data(2) << " "<< line.get_data(3) << " "<< line.get_data(4) << " "<< line.get_data(5) << " "<< endl; // testing
 
     int prob; // for probability calculations
     string tempName = "none"; // for displaying name of customer
@@ -253,7 +266,7 @@ int main() {
         prob = rand() % 100 + 1;  // returns random number 1-100
         if (prob <= P_ORDER) {
             //tempName = names.at(list) // TODO retrieve the data from the node
-            cout << tempName << " is served." << endl;
+            cout << tempName << " is served" << endl;
             line.pop_front(); // if they ordered, they are done and can leave
             --lineSize;
         }
@@ -265,12 +278,13 @@ int main() {
             rNum = rand() % (MAX_NR - MIN_NR + 1) + MIN_NR;
             line.push_back(rNum);
             ++lineSize;
-            cout << names.at(rNum) << " joins the line." << endl;
+            cout << names.at(rNum) << " joins the line" << endl;
         }
         
         // does the customer at the end of the line leave?
         prob = rand() % 100 + 1;
         if (prob <= P_END_LEAVES) {
+            //cout << names.at(line.) << " (at the rear) left the line" << endl;
             line.pop_back();
             --lineSize;
         }
@@ -279,7 +293,8 @@ int main() {
         prob = rand() % 100 + 1;
         if (prob <= P_ANY_LEAVES) {
             rNum = rand() % (lineSize - 1); // pick a random customer
-            
+            line.delete_val(rNum);
+            cout << names.at(rNum) << " left the line" << endl;
         }
 
         // does a VIP arrive?    
