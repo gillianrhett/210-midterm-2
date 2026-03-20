@@ -1,5 +1,7 @@
 #include <iostream>
-
+#include <fstream>
+#include <string>
+#include <vector>
 using namespace std;
 
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
@@ -214,9 +216,28 @@ public:
 };
 
 int main() {
+    srand(time(0));
     DoublyLinkedList line;
-    DoublyLinkedList names; // I'll use the int value of the line DLL to store the index of the customer's name from this list
+    vector<string> names; // the line's nodes will store ints corresponding to the index values of the names
+    ifstream inFile;
+    string name;
+    inFile.open("names.txt");
+    while (!inFile.eof()){
+        getline(inFile, name);
+        names.push_back(name);
+    }
+    inFile.close();
+    /*
+    // TESTING
+    for(string n : names)
+        cout << n << endl;
+    cout << names.size() << endl;
+    */
 // When the store opens (i.e. in first time period), add 5 customers to the line right away.
+    int rNum;
+    for (int i = 0; i < 5; ++i) {
+        rNum = rand()% (MAX_NR - MIN_NR + 1) - MIN_NR;
+    }
     
 
     for (int i = 0; i < MINUTES; ++i) {
