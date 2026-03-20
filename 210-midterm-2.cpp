@@ -261,7 +261,17 @@ int main() {
 
     for (int i = 2; i <= MINUTES; ++i) { // start at 2 like the example because opening was the first minute
         cout << "Time step #" << i << ":" << endl;
-        // does the first customer order?
+        
+        // if a VIP arrived in the previous minute, they get served now
+        if (VIP) {
+            cout << "\t" << names.at(line.get_data(1)) << " is served" << endl;
+            line.pop_front(); // if they ordered, they are done and can leave
+            --lineSize;
+            VIP = false;
+        }
+        
+        // does the first customer order and get served?
+        // I'm assuming this can happen in the same minute as a VIP gets served
         prob = rand() % 100 + 1;  // returns random number 1-100
         if (prob <= P_ORDER && lineSize > 0) {
             cout << "\t" << names.at(line.get_data(1)) << " is served" << endl;
@@ -291,8 +301,8 @@ int main() {
         prob = rand() % 100 + 1;
         if (prob <= P_ANY_LEAVES && lineSize > 0) {
             rNum = rand() % (lineSize - 1); // pick a random customer
-            line.delete_val(rNum);
-            cout  << "\t" << names.at(rNum) << " left the line" << endl;
+            cout  << "\t" << names.at(line.get_data(rNum)) << " left the line" << endl;
+            line.delete_pos(rNum);
             --lineSize;
         }
 
@@ -303,6 +313,7 @@ int main() {
             line.push_front(rNum);
             ++lineSize;
             cout << "\t" << names.at(rNum) << " (VIP) joins the front of the line" << endl;
+            VIP = true;
         }
 
         cout << "\tResulting line:" << endl;
