@@ -1,7 +1,17 @@
 #include <iostream>
+
 using namespace std;
 
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
+const double P_ORDER = 0.4, P_NEW = 0.6, P_END_LEAVES = 0.2, P_ANY_LEAVES = 0.1, P_VIP = 0.1;
+const int MINUTES = 20;
+/*
+A customer being helped at the beginning of the line and ordering their coffee is 40%
+A new customer joining the end of the line is 60%
+The customer at the end of the line deciding they don't want to wait and leaving is 20%
+Any particular customer can decide they don't want to wait and leave the line: 10%
+A VIP (very important person) customer with a Coffee House Gold Card gets to skip the line and go straight to the counter and order: 10%
+*/
 
 class DoublyLinkedList {
 private:
@@ -204,7 +214,15 @@ public:
 };
 
 int main() {
-    cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
+    DoublyLinkedList line;
+    DoublyLinkedList names; // I'll use the int value of the line DLL to store the index of the customer's name from this list
+// When the store opens (i.e. in first time period), add 5 customers to the line right away.
+    
+
+    for (int i = 0; i < MINUTES; ++i) {
+
+    }
+
 
     
     return 0;
