@@ -216,6 +216,7 @@ public:
     }
 
     // I couldn't think of a way to access an individual data value without making a new member function
+    // the only alternative I could think of was make the nodes store strings instead of ints, but keeping ints was easier for the random names
     int get_data(int position) { // this is a position, not an index, so 1 means the first item
         if (!head)
             return 0;
@@ -289,7 +290,7 @@ int main() {
             cout << "\t" << names.at(rNum) << " joins the line" << endl;
         }
         
-        // does the customer at the end of the line leave?
+        // does the customer at the end of the queue leave?
         prob = rand() % 100 + 1;
         if (prob <= P_END_LEAVES && lineSize > 0) {
             cout << "\t" << names.at(line.get_data(lineSize)) << " (at the rear) left the line" << endl;
@@ -300,7 +301,7 @@ int main() {
         // does any customer leave?
         prob = rand() % 100 + 1;
         if (prob <= P_ANY_LEAVES && lineSize > 0) {
-            rNum = rand() % (lineSize - 1); // pick a random customer
+            rNum = rand() % lineSize + 1; // pick a random customer
             cout  << "\t" << names.at(line.get_data(rNum)) << " left the line" << endl;
             line.delete_pos(rNum);
             --lineSize;
