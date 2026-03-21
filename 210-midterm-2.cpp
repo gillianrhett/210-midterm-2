@@ -217,6 +217,7 @@ public:
 
     // I couldn't think of a way to access an individual data value without making a new member function
     // the only alternative I could think of was make the nodes store strings instead of ints, but keeping ints was easier for the random names
+    // and that wouldn't solve the problem of accessing the data values anyway, it would just mean I don't have to use names.at() in all the cout statements
     int get_data(int position) { // this is a position, not an index, so 1 means the first item
         if (!head)
             return 0;
